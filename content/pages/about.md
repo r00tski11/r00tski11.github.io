@@ -5,38 +5,40 @@ author: "Joel Sam"
 url: "/about/"
 ---
 
-Hey there! I'm Joel, an Application Security Engineer at Zoho Corporation, where I've spent the past 3 years hunting security vulnerabilities in web, cloud, and iOS applications used by millions of people.
+I'm Joel -- application security engineer at Zoho Corporation, based in Chennai. I've spent the last 3 years doing security assessments on web, cloud, and iOS applications. 110+ apps assessed so far, across OWASP Top 10, API Top 10, and mobile security categories.
 
-## What I Do
+## Day to day
 
-My day-to-day involves a mix of manual vulnerability testing, code reviews, and building security tooling. I've assessed over 110 applications, led threat modeling sessions, and designed CTF challenges for internal security training events. There's something deeply satisfying about finding that one bug that everyone else missed.
+Mostly manual testing and code review. I break web apps with Burp Suite, poke at iOS binaries with Frida and Objection, and run threat modeling sessions using STRIDE. I've also ended up designing CTF challenges for internal security training, which is a surprisingly fun way to teach people how to think like an attacker.
 
-I'm particularly interested in the intersection of AI and security right now - using LLMs to automate security workflows and poking at AI-powered systems to see how they break.
+## Things I've built
 
-## Skills & Tools
+I like building tools that make security testing less tedious:
 
-On the security side, I work across penetration testing, mobile security (especially iOS), API security, cloud security (AWS/GCP), and threat modeling using STRIDE and PASTA frameworks.
+- **iOS IPA Analyzer** -- static analysis tool that checks against 134 OWASP Mobile Top 10 rules. Got tired of doing the same manual checks on 30+ iOS apps.
+- **CI/CD Supply-Chain Security System** -- built with Python, FastAPI, PostgreSQL, and Ed25519 signatures to verify pipeline integrity.
+- **AWS IAM Security Scanner** -- detects privilege escalation vectors and overly permissive policies.
+- **OAuth/SAML Security Toolkit** -- for testing enterprise SSO auth flows.
+- **Web App Vulnerability Scanner** -- Python-based, handles auth bypass, IDOR, SQLi, XSS detection. I use it alongside Nuclei and ZAP.
 
-My toolkit includes Burp Suite, Frida, Objection, Metasploit, MobSF, Nmap, sqlmap, Nuclei, and OWASP ZAP. For programming, I mostly write in Python and Bash, with some Java, JavaScript, and C when needed.
+Lately I've been messing with LLMs for security automation -- trying to see how far you can push them for things like automated code review triage and vulnerability pattern detection. Also poking at AI-powered apps to find where they break. Prompt injection is still way too easy on most of them.
 
-## Bug Bounties & CTFs
+## Bug bounties & CTFs
 
-I'm active on [HackerOne](https://hackerone.com/r00tski11) and [Bugcrowd](https://bugcrowd.com/h/Joel-sam), and I regularly solve challenges on [TryHackMe](https://tryhackme.com/p/r00tski11d) and [HackTheBox](https://app.hackthebox.com/public/users/1926265).
+Active on [HackerOne](https://hackerone.com/r00tski11) and [Bugcrowd](https://bugcrowd.com/h/Joel-sam). I spend a fair amount of time on [TryHackMe](https://tryhackme.com/p/r00tski11d) and [HackTheBox](https://app.hackthebox.com/public/users/1926265) when I want to learn something new.
 
-Currently working towards my OSCP certification.
+Working on my OSCP -- should be done by mid-2026.
 
-## Research & Publications
+## Research
 
-I published a research paper at the 2023 IEEE ICCCIS conference on [Mitigating the Security Risks of Browser Extensions](https://ieeexplore.ieee.org/document/10169483) - focusing on real-time detection of malicious browser extensions.
+Published a paper at IEEE ICCCIS 2023 on [detecting malicious browser extensions in real-time](https://ieeexplore.ieee.org/document/10169483). Also completed the Google Cloud Security program (8 skill badges).
 
-## Education
+## Background
 
-B.Tech in Computer Science from Karunya Institute of Technology, Coimbatore (2019-2023).
+B.Tech in Computer Science, Karunya Institute of Technology, Coimbatore (2019-2023). I write mostly Python and Bash, some Java and JavaScript, and occasional C when I have to.
 
-## Let's Connect
+---
 
-- Email: [joelsam908@gmail.com](mailto:joelsam908@gmail.com)
-- LinkedIn: [linkedin.com/in/joel-sam](https://linkedin.com/in/joel-sam)
-- GitHub: [github.com/r00tski11](https://github.com/r00tski11)
-
-Feel free to reach out if you want to talk security, collaborate on research, or just geek out about vulnerabilities.
+- [joelsam908@gmail.com](mailto:joelsam908@gmail.com)
+- [LinkedIn](https://linkedin.com/in/joel-sam)
+- [GitHub](https://github.com/r00tski11)

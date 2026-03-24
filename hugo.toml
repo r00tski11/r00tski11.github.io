@@ -52,11 +52,15 @@ enableEmoji = true
   dateFormat = "2 Jan 2006"
   rssFeedDescription = "summary"
 
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
 [params.author]
   avatar = "avatar.jpg"
   intro = "Security Research & Vulnerability Hunting"
   name = "Joel Sam"
-  description = "Application Security Engineer at Zoho. Hunting vulnerabilities in web, cloud, and iOS applications. Bug bounty researcher, CTF enthusiast, and security tooling builder."
+  description = "AppSec engineer at Zoho. I break web, cloud, and iOS apps for a living, build security tools on the side, and do bug bounties when I can."
 
 [[params.socialIcons]]
   name = "github"
