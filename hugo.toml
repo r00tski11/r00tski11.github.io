@@ -60,7 +60,7 @@ enableEmoji = true
   avatar = "avatar.jpg"
   intro = "Security Research & Vulnerability Hunting"
   name = "Joel Sam"
-  description = "AppSec engineer at Zoho. I test web, cloud, and iOS apps, build security tools, and hunt bugs on the side."
+  description = "AppSec engineer. I test web, cloud, and iOS apps, build security tools, and hunt bugs on the side."
 
 [[params.socialIcons]]
   name = "github"
