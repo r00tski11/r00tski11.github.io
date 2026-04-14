@@ -19,12 +19,6 @@ Manual testing, code review, and threat modeling (STRIDE). I also build tools to
 
 Tools I use daily: Burp Suite, Frida, Objection, MobSF, Nuclei, ZAP.
 
-## Bug bounties & CTFs
-
-Active on [HackerOne](https://hackerone.com/r00tski11) and [Bugcrowd](https://bugcrowd.com/h/Joel-sam). Also on [TryHackMe](https://tryhackme.com/p/r00tski11d) and [HackTheBox](https://app.hackthebox.com/public/users/1926265).
-
-Currently preparing for my OSCP.
-
 ## Other stuff
 
 Published a paper at IEEE ICCCIS 2023 on [browser extension security](https://ieeexplore.ieee.org/document/10169483). Did the Google Cloud Security program (8 skill badges). B.Tech CS from Karunya Institute, Coimbatore (2019-2023).
