@@ -18,6 +18,6 @@ No promises on a regular posting schedule.
 
 ## About me
 
-Application Security Engineer. I do security assessments on web, cloud, and iOS apps. Done 110+ so far. I also build security tools, design CTF challenges for internal training, and spend probably too much time on HackerOne and Bugcrowd.
+Application Security Engineer. I do security assessments on web, cloud, and iOS apps. I also build security tools, design CTF challenges for internal training, and spend probably too much time on HackerOne and Bugcrowd.
 
 More details on the [About](/about/) page.
