@@ -7,7 +7,7 @@ categories: ["cloud"]
 toc: true
 ---
 
-A while back at work, we ran into a problem. There was no way to confirm that the build artifact running in production was the same one that came out of CI. Between build, staging, and prod, there were multiple handoff points. Any of them could've been tampered with. Nobody was checking.
+I was working on a project where there was no way to confirm that the build artifact running in production was the same one that came out of CI. Between build, staging, and prod, there were multiple handoff points. Any of them could've been tampered with. Nobody was checking.
 
 This isn't a theoretical problem. SolarWinds happened because attackers injected malicious code into the build process. Codecov got hit when someone modified their bash uploader script and harvested credentials for months. 3CX was the same thing. Supply chain, build pipeline, compromised.
 
