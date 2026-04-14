@@ -5,7 +5,7 @@ author: "Joel Sam"
 url: "/about/"
 ---
 
-I'm Joel, application security engineer based out of Chennai. Been doing security assessments on web, cloud, and iOS apps for the last 3 years. 110+ apps so far.
+I'm Joel, application security engineer. Been doing security assessments on web, cloud, and iOS apps for the last 3 years. 110+ apps so far.
 
 ## What I do
 
