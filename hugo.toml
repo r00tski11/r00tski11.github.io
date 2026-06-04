@@ -56,6 +56,10 @@ enableEmoji = true
   category = "categories"
   tag = "tags"
 
+[author]
+  name = "Joel Sam"
+  email = "joelsam908@gmail.com"
+
 [params.author]
   avatar = "avatar.jpg"
   intro = "Security Research & Vulnerability Hunting"
