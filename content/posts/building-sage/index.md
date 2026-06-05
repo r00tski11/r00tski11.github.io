@@ -1,5 +1,5 @@
 ---
-title: "Building SAGE: a security audit automation framework"
+title: "Building SAGE: a security audit automation framework (Part 1)"
 date: 2026-06-04
 description: "How I rebuilt my audit workflow as a 5-command framework, plus what changed from v1."
 tags: ["security", "automation", "appsec", "llm", "audit", "owasp"]
@@ -7,17 +7,27 @@ categories: ["security"]
 toc: true
 ---
 
-Every security assessment I run starts the same way. Same OWASP modules, same tools, same product intake, same workspace setup. The part that actually matters is the hands-on work. Mapping the attack surface, testing how auth and access control hold up, finding where business logic breaks, chaining findings together. But a good twenty percent of every engagement is just setup before any of that can start.
+> **tldr:** I wanted to build a security assessment automation framework: something that reasons through code the way an application security engineer would and compounds what it knows with every engagement. So I built SAGE (Security Automation and Governance Engine), covering the full lifecycle in five commands:
+>
+> 1. Workspace setup
+> 2. Static analysis (semgrep, trufflehog, eight dep scanners)
+> 3. Dynamic testing (Burp Suite Pro, Playwright, Nuclei, sqlmap, ffuf)
+> 4. Five-layer false-positive triage
+> 5. Final reporting with KPI and cost tracking
+>
+> What SAGE learns on one engagement feeds into the knowledge base for the next, creating a self-improving closed loop. The verification, chaining, and final call on every finding are still mine. This post covers the architecture and how it got here.
 
-So I built a framework to handle that and more. I'm calling it SAGE for now, borrowed from the Valorant agent because I needed a name and didn't want to overthink it. Luckily, **Security Automation and Governance Engine (SAGE)** works as a backronym. Might rename it properly later. It boils down to five commands that cover setup, static analysis, dynamic testing, triage, and reporting. The framework handles the scaffolding and tool orchestration so I can spend my time on the actual analysis and manual verification instead.
+Running an application security assessment means more than running tools and logging what they flag. It means tracing data flows across module boundaries, chaining findings into something catastrophic, evaluating whether a flagged path is actually reachable in the deployment context, and making judgment calls no scanner is going to make for you. The tooling exists. What doesn't is something that ties it all together, gets smarter about the specific patterns it's seen before, and scales across an org the way a single-engineer manual process never will.
 
-Here's how it came together. I'll cover the results in a follow-up post once I've run enough assessments through SAGE to have something worth analysing.
+So I built SAGE (Security Automation and Governance Engine): a closed-loop security assessment automation framework that reasons through code the way an application security engineer would and compounds what it knows with every engagement. It boils down to five commands covering setup, static analysis, dynamic testing, triage, and reporting. The framework handles the scaffolding and tool orchestration so I can spend my time on the actual analysis and manual verification instead.
+
+I'll cover the results in a follow-up post once I've run enough assessments through SAGE to have something worth analysing.
 
 ## v1: the white-box workflow
 
 I was running security assessments on multiple products in parallel. Each one needed the same OWASP coverage, the same toolchain, the same evidence standards. I was copy-pasting the same setup steps across engagements and still missing things. The process needed to be codified, not repeated from memory every time.
 
-I started building the first version in late February 2026. The approach was shaped by two posts I'd been reading around that time. Addy Osmani's [AI coding workflow](https://addyosmani.com/blog/ai-coding-workflow/) and Boris Tane's [writeup on using Claude Code](https://boristane.com/blog/how-i-use-claude-code/). Both structure AI-assisted work into phased processes with human review gates at each step. I took that model and applied it to security assessments.
+I started building the first version in late February 2026. Two posts I'd been reading around that time shaped the approach. Addy Osmani's [AI coding workflow](https://addyosmani.com/blog/ai-coding-workflow/) and Boris Tane's [writeup on using Claude Code](https://boristane.com/blog/how-i-use-claude-code/). Both structure AI-assisted work into phased processes with human review gates at each step. I took that model and applied it to security assessments.
 
 The first version was a Claude Code skill suite. It started with around ten skills covering the core phases, but as edge cases came up (adjusting findings mid-triage, handling quality checks, managing workspace state), it grew to fifteen. `/new-audit`, `/intake`, `/scan`, `/analyze`, `/finding`, `/triage`, `/report`, plus others for dynamic testing, cleanup, and wrap-up. Each skill ran one phase. Every finding had to carry a `file:line` reference and pass a five-layer false-positive check before it got recorded.
 
@@ -113,16 +123,6 @@ Dynamic, via MCP servers: Burp Suite Pro (proxy, Repeater, Intruder, Collaborato
 
 Layered on top is a knowledge base. Per-product learnings, false-positive patterns, verified-finding patterns. After each assessment, the lessons feed back into the patterns for the next one. The framework gets sharper over time instead of staying static.
 
-## Worktrees: parallel dev on a live tool
-
-Here's the thing. I run SAGE on live assessments while actively developing it. A single mainline branch means a half-finished feature can break an active engagement. That's bad.
-
-The fix is git worktrees. I picked up the pattern from [Gastown](https://github.com/gastownhall/gastown), which uses git-backed state for parallel agent coordination. Same idea here but simpler: each feature branch lives in its own directory, on its own checkout, independent of the live skill set.
-
-Live SAGE points to the main branch via symlinks. Feature worktrees are off to the side. Branches that fail validation never touch the version of SAGE running real assessments. When a branch is ready, it merges into main and the symlinks are already pointing there. No reinstall, no symlink rewiring.
-
-The thing worktrees gave me that branches alone didn't: parallel context switching with zero stash and checkout overhead. I can move between multiple open feature lines in the time it would take to `git stash pop` once.
-
 ## Design decisions
 
 A few choices I'd defend.
@@ -137,6 +137,18 @@ A few choices I'd defend.
 
 **Cost-aware from day one.** Every session logs token counts. The `metrics/` folder tracks per-assessment spend and `/sage-report` rolls it into the deliverables. Average is twelve to eighteen dollars per assessment. That has to be visible before it scales to a team.
 
+## What it doesn't catch
+
+SAGE is good at structured white-box assessment. It's not good at everything.
+
+**Runtime behaviour.** Static analysis can flag that TLS validation is disabled in an HTTP client, but it can't confirm whether the production deployment actually enforces certificate pinning. That requires a live MITM test, which is outside SAGE's current scope.
+
+**Authorization bypass through alternate entry points.** SAGE checks auth on the paths it can trace, but if there's an undocumented API route that skips the auth middleware entirely, static data-flow analysis across module boundaries is weak at catching that. These still need manual route mapping and testing.
+
+**Absence of defence.** Scanners flag the presence of bad code. They're much worse at flagging the absence of good code. Missing certificate pinning, missing jailbreak detection, missing rate limiting. If it's not there, there's nothing to pattern-match against. I catch these through checklist-driven manual review against OWASP MASTG and WSTG requirements.
+
+**AI and LLM-specific patterns.** Prompt injection through user content, unvalidated tool execution from model output, session data leaking into model context. These are new enough that traditional SAST tools don't have established rule sets for them yet. I'm building custom patterns as I encounter them, but this is still largely manual territory.
+
 ## What's next
 
 SAGE works. But there's a clear list of things I'm actively working on to make it better.
@@ -147,7 +159,7 @@ SAGE works. But there's a clear list of things I'm actively working on to make i
 
 **Schema-validating findings at write time.** Right now findings are markdown with frontmatter. I'm building a JSON Schema layer to catch missing CWE mappings, missing severities, or missing evidence before they hit triage.
 
-**Testing the framework properly.** SAGE is tested via dogfooding today. That works but it's slow. I'm adding real tests on the orchestration layer to catch regressions before an assessment fails halfway through.
+The architecture is solid and the five commands work end to end. What I genuinely don't know yet is whether the closed loop delivers on its core premise: does pattern compounding from one engagement actually make SAGE meaningfully better on the next, or does it plateau after a few runs? That's not a question the architecture can answer. Part 2 will have the data.
 
 ## References
 
