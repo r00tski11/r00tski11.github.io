@@ -1,6 +1,7 @@
 baseURL = 'https://r00tski11.github.io/'
 title = "Joel Sam | Security Research"
 languageCode = 'en-us'
+defaultContentLanguage = 'en'
 theme = 'hugo-blog-awesome'
 
 # Enable emojis globally
