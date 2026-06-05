@@ -5,7 +5,6 @@ description: "How I rebuilt my audit workflow as a 5-command framework, plus wha
 tags: ["security", "automation", "appsec", "llm", "audit", "owasp"]
 categories: ["security"]
 toc: true
-tocOpen: true
 ---
 
 > **tldr:** I wanted to build a security assessment automation framework: something that reasons through code the way an application security engineer would and compounds what it knows with every engagement. So I built SAGE (Security Automation and Governance Engine), covering the full lifecycle in five commands:
